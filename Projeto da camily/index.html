@@ -1,221 +1,349 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AzureBreeze | Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        azure: {
-                            100: '#E1F5FE',
-                            200: '#B3E5FC',
-                            300: '#81D4FA',
-                            400: '#4FC3F7',
-                            500: '#29B6F6',
-                            600: '#03A9F4',
-                            700: '#0288D1',
-                            800: '#0277BD',
-                            900: '#01579B',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e1f5fe 100%);
-        }
-        .card-shadow {
-            box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
-        }
-        .input-focus:focus {
-            border-color: #4FC3F7;
-            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
-        }
-    </style>
-</head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
-        <!-- Tabs -->
-        <div class="flex mb-8">
-            <button id="loginTab" class="flex-1 py-4 px-6 text-center font-medium text-azure-600 border-b-2 border-azure-500 transition-all duration-300">
-                Login
-            </button>
-            <button id="registerTab" class="flex-1 py-4 px-6 text-center font-medium text-gray-500 border-b border-gray-200 transition-all duration-300">
-                Cadastro
-            </button>
+# Códigos Completos - Quiz de Harry Potter
+
+## 1. Login.tsx
+Página de login com tema mágico que captura apenas o nome de usuário.
+
+```typescript
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Wand2 } from "lucide-react";
+
+interface LoginProps {
+  onLogin: (username: string) => void;
+}
+
+export default function Login({ onLogin }: LoginProps) {
+  const [username, setUsername] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username.trim()) {
+      setIsLoading(true);
+      setTimeout(() => {
+        onLogin(username);
+      }, 500);
+    }
+  };
+
+  return (
+    <div
+      className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
+      style={{
+        backgroundImage: "url('/login-bg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/40" />
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              opacity: Math.random() * 0.7 + 0.3,
+              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 w-full max-w-md px-6">
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-yellow-400/20 blur-2xl rounded-full" />
+              <Wand2 className="w-16 h-16 text-yellow-300 relative z-10" />
+            </div>
+          </div>
+          <h1 className="text-5xl font-bold text-yellow-300 mb-2 drop-shadow-lg" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Quiz Mágico
+          </h1>
+          <p className="text-lg text-yellow-100/80 font-light">
+            Bem-vindo ao mundo de Harry Potter
+          </p>
         </div>
 
-        <!-- Login Form -->
-        <div id="loginForm" class="bg-white rounded-xl p-8 card-shadow">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Bem-vindo de volta</h1>
-            
-            <form class="space-y-5">
-                <div>
-                    <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i data-feather="mail" class="text-gray-400"></i>
-                        </div>
-                        <input type="email" id="loginEmail" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-300" placeholder="seu@email.com" required>
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i data-feather="lock" class="text-gray-400"></i>
-                        </div>
-                        <input type="password" id="loginPassword" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-300" placeholder="••••••••" required>
-                    </div>
-                </div>
-                
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="rememberMe" type="checkbox" class="h-4 w-4 text-azure-500 focus:ring-azure-400 border-gray-300 rounded">
-                        <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Lembrar-me</label>
-                    </div>
-                    <a href="#" class="text-sm text-azure-600 hover:text-azure-700">Esqueceu a senha?</a>
-                </div>
-                
-                <button type="submit" class="w-full bg-azure-500 hover:bg-azure-600 text-white font-medium py-3 px-4 rounded-lg transition duration-300 shadow-md hover:shadow-lg">
-                    Entrar
-                </button>
-            </form>
-            
-            <div class="mt-6">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">Ou continue com</span>
-                    </div>
-                </div>
-                
-                <div class="mt-6 grid grid-cols-1 gap-3">
-                    <button class="w-full inline-flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300">
-                        <img src="https://www.svgrepo.com/show/355037/google.svg" class="h-5 w-5 mr-2" alt="Google logo">
-                        Entrar com Google
-                    </button>
-                </div>
-            </div>
-        </div>
+        <div className="bg-purple-950/60 backdrop-blur-md border border-yellow-400/30 rounded-2xl p-8 shadow-2xl">
+          <h2 className="text-2xl font-bold text-yellow-300 mb-6 text-center" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Entre no Quiz
+          </h2>
 
-        <!-- Register Form (Hidden by default) -->
-        <div id="registerForm" class="bg-white rounded-xl p-8 card-shadow hidden">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Crie sua conta</h1>
-            
-            <form class="space-y-5">
-                <div>
-                    <label for="registerName" class="block text-sm font-medium text-gray-700 mb-1">Nome completo</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i data-feather="user" class="text-gray-400"></i>
-                        </div>
-                        <input type="text" id="registerName" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-300" placeholder="Seu nome" required>
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i data-feather="mail" class="text-gray-400"></i>
-                        </div>
-                        <input type="email" id="registerEmail" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-300" placeholder="seu@email.com" required>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i data-feather="lock" class="text-gray-400"></i>
-                            </div>
-                            <input type="password" id="registerPassword" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-300" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label for="registerConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirme a senha</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i data-feather="lock" class="text-gray-400"></i>
-                            </div>
-                            <input type="password" id="registerConfirmPassword" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-300" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex items-start">
-                    <div class="flex items-center h-5">
-                        <input id="terms" type="checkbox" class="h-4 w-4 text-azure-500 focus:ring-azure-400 border-gray-300 rounded" required>
-                    </div>
-                    <div class="ml-3 text-sm">
-                        <label for="terms" class="text-gray-700">Eu concordo com os <a href="#" class="text-azure-600 hover:text-azure-700">Termos de Serviço</a> e <a href="#" class="text-azure-600 hover:text-azure-700">Política de Privacidade</a></label>
-                    </div>
-                </div>
-                
-                <button type="submit" class="w-full bg-azure-500 hover:bg-azure-600 text-white font-medium py-3 px-4 rounded-lg transition duration-300 shadow-md hover:shadow-lg">
-                    Criar conta
-                </button>
-            </form>
-            
-            <div class="mt-6 text-center text-sm">
-                <p class="text-gray-500">Já tem uma conta? 
-                    <a href="#" id="switchToLogin" class="text-azure-600 hover:text-azure-700 font-medium">Faça login</a>
-                </p>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-yellow-200"
+              >
+                Nome de Usuário
+              </label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="Digite seu nome mágico..."
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="bg-purple-900/50 border-yellow-400/40 text-white placeholder:text-purple-300/50 focus:border-yellow-300 focus:ring-yellow-400/50 transition-all"
+                disabled={isLoading}
+              />
             </div>
+
+            <Button
+              type="submit"
+              disabled={!username.trim() || isLoading}
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-purple-950 font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-yellow-400/50"
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center">
+                  <span className="animate-spin mr-2">✨</span>
+                  Entrando...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center">
+                  <Wand2 className="w-5 h-5 mr-2" />
+                  Entrar no Quiz
+                </span>
+              )}
+            </Button>
+          </form>
+
+          <p className="text-center text-purple-300/70 text-xs mt-6">
+            Descubra seus conhecimentos sobre o universo mágico de Harry Potter
+          </p>
         </div>
+      </div>
+
+      <style>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) translateX(0px);
+            opacity: 0.3;
+          }
+          50% {
+            transform: translateY(-20px) translateX(10px);
+            opacity: 0.7;
+          }
+        }
+      `}</style>
     </div>
+  );
+}
+```
 
-    <script>
-        // Tab switching functionality
-        const loginTab = document.getElementById('loginTab');
-        const registerTab = document.getElementById('registerTab');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const switchToLogin = document.getElementById('switchToLogin');
+## 2. Home.tsx
+Componente principal que gerencia o fluxo entre login e quiz.
 
-        function showLogin() {
-            loginTab.classList.add('text-azure-600', 'border-azure-500');
-            loginTab.classList.remove('text-gray-500', 'border-gray-200');
-            registerTab.classList.add('text-gray-500', 'border-gray-200');
-            registerTab.classList.remove('text-azure-600', 'border-azure-500');
-            loginForm.classList.remove('hidden');
-            registerForm.classList.add('hidden');
-        }
+```typescript
+import { useState } from "react";
+import Login from "./Login";
+import Quiz from "./Quiz";
 
-        function showRegister() {
-            registerTab.classList.add('text-azure-600', 'border-azure-500');
-            registerTab.classList.remove('text-gray-500', 'border-gray-200');
-            loginTab.classList.add('text-gray-500', 'border-gray-200');
-            loginTab.classList.remove('text-azure-600', 'border-azure-500');
-            registerForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
-        }
+export default function Home() {
+  const [username, setUsername] = useState<string | null>(null);
 
-        loginTab.addEventListener('click', showLogin);
-        registerTab.addEventListener('click', showRegister);
-        switchToLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLogin();
-        });
+  const handleLogin = (name: string) => {
+    setUsername(name);
+  };
 
-        // Initialize feather icons
-        feather.replace();
-    </script>
-</body>
-</html>
+  const handleLogout = () => {
+    setUsername(null);
+  };
+
+  if (!username) {
+    return <Login onLogin={handleLogin} />;
+  }
+
+  return <Quiz username={username} onLogout={handleLogout} />;
+}
+```
+
+## 3. App.tsx
+Configuração principal da aplicação com tema dark.
+
+```typescript
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import NotFound from "@/pages/NotFound";
+import { Route, Switch } from "wouter";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import Home from "./pages/Home";
+
+function Router() {
+  return (
+    <Switch>
+      <Route path={"/"} component={Home} />
+      <Route path={"/404"} component={NotFound} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="dark">
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+}
+
+export default App;
+```
+
+## 4. index.css (Principais Configurações)
+Configuração de cores com tema mágico roxo e dourado.
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --primary: oklch(0.75 0.18 60);
+  --primary-foreground: oklch(0.15 0.08 280);
+  --sidebar-primary: oklch(0.75 0.18 60);
+  --sidebar-primary-foreground: oklch(0.95 0.02 60);
+  --chart-1: oklch(0.75 0.18 60);
+  --chart-2: oklch(0.65 0.15 280);
+  --chart-3: oklch(0.55 0.12 280);
+  --chart-4: oklch(0.45 0.1 280);
+  --chart-5: oklch(0.35 0.08 280);
+  --radius: 0.75rem;
+  --background: oklch(0.15 0.08 280);
+  --foreground: oklch(0.95 0.02 60);
+  --card: oklch(0.22 0.08 280);
+  --card-foreground: oklch(0.95 0.02 60);
+  --popover: oklch(0.22 0.08 280);
+  --popover-foreground: oklch(0.95 0.02 60);
+  --secondary: oklch(0.35 0.15 280);
+  --secondary-foreground: oklch(0.95 0.02 60);
+  --muted: oklch(0.3 0.1 280);
+  --muted-foreground: oklch(0.75 0.05 60);
+  --accent: oklch(0.75 0.18 60);
+  --accent-foreground: oklch(0.15 0.08 280);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.35 0.1 280);
+  --input: oklch(0.22 0.08 280);
+  --ring: oklch(0.75 0.18 60);
+  --sidebar: oklch(0.22 0.08 280);
+  --sidebar-foreground: oklch(0.95 0.02 60);
+  --sidebar-accent: oklch(0.75 0.18 60);
+  --sidebar-accent-foreground: oklch(0.15 0.08 280);
+  --sidebar-border: oklch(0.35 0.1 280);
+  --sidebar-ring: oklch(0.75 0.18 60);
+}
+
+@layer base {
+  .font-sans {
+    font-family: 'Poppins', sans-serif;
+  }
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+```
+
+## 5. Quiz.tsx - Resumo da Estrutura
+
+O arquivo Quiz.tsx contém:
+
+### Interface Question
+```typescript
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+}
+```
+
+### Perguntas Incluídas (7 total)
+1. Quem é o melhor amigo de Harry Potter? → **Ron Weasley**
+2. Qual é o nome da escola onde Harry Potter estuda? → **Hogwarts**
+3. O que Harry encontra no espelho de Ojesed? → **Ele vê seus pais mortos**
+4. Quem colocou o nome de Harry no Cálice de Fogo? → **Bartô Crouch Jr.**
+5. Qual dragão Harry enfrenta na primeira tarefa? → **Dragão Húngaro de Pua Curta**
+6. Quem ajuda Harry no labirinto? → **Cedrico Diggory**
+7. Qual feitiço Hermione lança sobre Grampo? → **Confundus**
+
+### Funcionalidades Principais
+- **Navegação**: Botões Anterior/Próxima para percorrer as perguntas
+- **Confirmação de Resposta**: Usuário seleciona e confirma antes de avançar
+- **Barra de Progresso**: Mostra percentual de conclusão
+- **Verificação Automática**: Compara resposta com gabarito
+- **Tela de Resultados**: Exibe pontuação e análise detalhada
+- **Refazer Quiz**: Opção para começar novamente
+
+### Estados Visuais
+- **Seleção**: Borda dourada e fundo com transparência
+- **Resposta Correta**: Fundo verde com ícone de check
+- **Resposta Incorreta**: Fundo vermelho com ícone de X
+- **Resultados**: Mostra resposta correta para erros
+
+## Tema de Cores
+
+| Elemento | Cor OKLCH | Descrição |
+|----------|-----------|-----------|
+| Fundo | `oklch(0.15 0.08 280)` | Roxo profundo |
+| Texto Principal | `oklch(0.95 0.02 60)` | Branco/Creme |
+| Destaque (Dourado) | `oklch(0.75 0.18 60)` | Dourado quente |
+| Secundário (Roxo) | `oklch(0.35 0.15 280)` | Roxo médio |
+| Cards | `oklch(0.22 0.08 280)` | Roxo escuro |
+
+## Tipografia
+
+- **Display Font**: Playfair Display (títulos, headings)
+- **Body Font**: Poppins (texto principal, labels)
+
+## Estrutura de Diretórios
+
+```
+client/src/
+├── pages/
+│   ├── Home.tsx          (Gerenciador de fluxo)
+│   ├── Login.tsx         (Tela de login)
+│   └── Quiz.tsx          (Tela do quiz)
+├── App.tsx               (Configuração principal)
+├── index.css             (Estilos e cores)
+└── main.tsx              (Entry point)
+
+client/public/
+├── login-bg.png          (Fundo mágico login)
+└── quiz-bg.png           (Fundo biblioteca)
+```
+
+## Como Adicionar Mais Perguntas
+
+Para adicionar novas perguntas, edite o array `QUESTIONS` em `Quiz.tsx`:
+
+```typescript
+{
+  id: 8,
+  question: "Sua pergunta aqui?",
+  options: ["Opção 1", "Opção 2", "Opção 3", "Opção 4"],
+  correctAnswer: "Opção Correta",
+}
+```
+
+## Próximos Passos Sugeridos
+
+1. **Persistência de Dados**: Salvar resultados em localStorage ou banco de dados
+2. **Categorias de Perguntas**: Organizar por dificuldade ou livro
+3. **Ranking**: Mostrar top scores dos usuários
+4. **Temas Adicionais**: Criar mais quizzes sobre outros tópicos
+5. **Compartilhamento**: Permitir compartilhar resultados em redes sociais
